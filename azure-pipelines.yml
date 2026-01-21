@@ -5,9 +5,7 @@ trigger:
       - master
 
 pool:
-  name: 'Default'   # Your self-hosted agent pool name
-
-
+  name: 'Default'
 
 # ==============================
 # Variable Group
@@ -23,25 +21,10 @@ steps:
   - checkout: self
     clean: true
 
-  - task: JavaToolInstaller@0
-    displayName: "Install JDK 11"
-    inputs:
-      versionSpec: '11'
-      jdkArchitectureOption: 'x64'
-      jdkSourceOption: 'PreInstalled'
-
- 
-
-  - task: Maven@4
-    displayName: "Run Appium TestNG Tests on LambdaTest"
-    inputs:
-      mavenPomFile: 'pom.xml'
-      goals: 'clean test'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.11'
-      mavenVersionOption: 'Default'
-      publishJUnitResults: true
-      testResultsFiles: '**/surefire-reports/*.xml'
+  - script: |
+      echo Running Android Test
+      mvn test -P android-single
+    displayName: 'Run Android Tests'
     env:
       LT_USERNAME: $(LT_USERNAME)
       LT_ACCESS_KEY: $(LT_ACCESS_KEY)
