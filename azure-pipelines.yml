@@ -4,14 +4,10 @@ trigger:
       - main
       - master
 
-pr:
-  branches:
-    include:
-      - main
-      - master
-
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'Default'   # Your self-hosted agent pool name
+
+
 
 # ==============================
 # Variable Group
