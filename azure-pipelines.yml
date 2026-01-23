@@ -3,6 +3,7 @@ trigger:
     include:
       - main
       - master
+      - fix/appium-tests
 
 pool:
   name: 'Default'
@@ -22,8 +23,8 @@ steps:
     clean: true
 
   - script: |
-      echo Running Android Test
-      mvn test -P android-single
+      echo Running parallel Android Test
+      mvn test -P android-parallel
     displayName: 'Run Android Tests'
     env:
       LT_USERNAME: $(LT_USERNAME)
