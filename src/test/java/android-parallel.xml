@@ -29,4 +29,5 @@
             <class name="AndroidApp"/>
         </classes>
     </test>
+
 </suite>

@@ -1,84 +1,105 @@
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.AppiumBy;
-import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.options.UiAutomator2Options;
-//import org.openqa.selenium.By;
-import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.testng.annotations.Parameters;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
 import java.net.URL;
+import java.time.Duration;
 import java.util.HashMap;
 
 public class AndroidApp {
 
-    private AndroidDriver driver;
+    String userName = System.getenv("LT_USERNAME") == null ? "username" : System.getenv("LT_USERNAME");
+    String accessKey = System.getenv("LT_ACCESS_KEY") == null ? "accessKey" : System.getenv("LT_ACCESS_KEY");
+    String app_id = System.getenv("LT_APP_ID") == null ? "lt://proverbial-android" : System.getenv("LT_APP_ID");
+    String grid_url = System.getenv("LT_GRID_URL") == null ? "mobile-hub.lambdatest.com" : System.getenv("LT_GRID_URL");
 
-    String userName = System.getenv("LT_USERNAME");
-    String accessKey = System.getenv("LT_ACCESS_KEY");
-    String grid_url = "mobile-hub.lambdatest.com";
+    AppiumDriver driver;
 
     @Test
-    @Parameters({"device", "version", "platform"})
+    @org.testng.annotations.Parameters(value = {"device", "version", "platform"})
     public void AndroidApp1(String device, String version, String platform) {
-
         try {
-            // -------- Appium Options (W3C compliant) --------
-
-
-            DesiredCapabilities capabilities = new DesiredCapabilities();
-            HashMap<String, Object> ltOptions = new HashMap<String, Object>();
+            DesiredCapabilities options = new DesiredCapabilities();
+            HashMap<String, Object> ltOptions = new HashMap<>();
             ltOptions.put("w3c", true);
-            ltOptions.put("build", "Java TestNG");
-            ltOptions.put("name", platform + " " + device + " " + version);
-            ltOptions.put("deviceName", device);
-            ltOptions.put("platformVersion", version);
-            ltOptions.put("platformName", platform);
-            ltOptions.put("app", "lt://APP1016054801767535388174642");
-            ltOptions.put("autoGrantPermissions", true);
             ltOptions.put("isRealMobile", true);
-            capabilities.setCapability("lt:options", ltOptions);
+            ltOptions.put("build", "Java TestNG Build");
+            ltOptions.put("name", "Android Test");
+            ltOptions.put("visual", true);
+            ltOptions.put("devicelog", true);
+            ltOptions.put("autoGrantPermissions", true);
+            ltOptions.put("platformName", "android");
+            ltOptions.put("platformVersion", "15");
+            ltOptions.put("deviceName", "Galaxy.*");
+            ltOptions.put("app", "lt://APP  10160502491773060447490389");
+            options.setCapability("lt:options", ltOptions);
 
 
-            String hub = "https://" + userName + ":" + accessKey + "@"
-                    + grid_url + "/wd/hub";
+            String hub = "https://" + userName + ":" + accessKey + "@" + grid_url + "/wd/hub";
 
-            driver = new AndroidDriver(new URL(hub), capabilities);
+            System.out.println("USERNAME: " + System.getenv("LT_USERNAME"));
+            System.out.println("ACCESS_KEY: " + System.getenv("LT_ACCESS_KEY"));
 
-            // -------- App Actions --------
-            driver.findElement(By.id("com.lambdatest.proverbial:id/color")).click();
+            driver = new AppiumDriver(new URL(hub), options);
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+
+            // Changes color to pink
+            WebElement color = wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.id("com.lambdatest.proverbial:id/color")));
+            color.click();
             Thread.sleep(1000);
-            driver.findElement(By.id("com.lambdatest.proverbial:id/color")).click();
+            color.click();
 
-            driver.findElement(By.id("com.lambdatest.proverbial:id/Text")).click();
-            driver.findElement(By.id("com.lambdatest.proverbial:id/toast")).click();
+            // Changes the text to "Proverbial"
+            WebElement text = wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.id("com.lambdatest.proverbial:id/Text")));
+            text.click();
 
-            driver.findElement(By.id("com.lambdatest.proverbial:id/notification")).click();
+            // Toast will be visible
+            WebElement toast = wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.id("com.lambdatest.proverbial:id/toast")));
+            toast.click();
+
+            // Notification will be visible
+            WebElement notification = wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.id("com.lambdatest.proverbial:id/notification")));
+            notification.click();
             Thread.sleep(2000);
 
-            driver.findElement(By.id("com.lambdatest.proverbial:id/geoLocation")).click();
+            // Opens the geolocation page
+            WebElement geo = wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.id("com.lambdatest.proverbial:id/geoLocation")));
+            geo.click();
             Thread.sleep(5000);
 
-            driver.findElement(AppiumBy.accessibilityId("Home")).click();
+            // Takes back to home page
+            WebElement home = wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.accessibilityId("Home")));
+            home.click();
 
-            driver.findElement(By.id("com.lambdatest.proverbial:id/speedTest")).click();
+            // Takes to speed test page
+            WebElement speedtest = wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.id("com.lambdatest.proverbial:id/speedTest")));
+            speedtest.click();
             Thread.sleep(5000);
 
-            driver.findElement(AppiumBy.accessibilityId("Home")).click();
+            // Back to home page
+            WebElement home2 = wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.accessibilityId("Home")));
+            home2.click();
 
-            driver.findElement(AppiumBy.accessibilityId("Browser")).click();
+            // Opens the browser
+            WebElement browser = wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.accessibilityId("Browser")));
+            browser.click();
 
-            driver.findElement(By.id("com.lambdatest.proverbial:id/url"))
-                    .sendKeys("https://www.lambdatest.com");
+            WebElement url = wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.id("com.lambdatest.proverbial:id/url")));
+            url.click();
+            url.sendKeys("https://www.lambdatest.com");
 
-            driver.findElement(By.id("com.lambdatest.proverbial:id/find")).click();
+            WebElement find = wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.id("com.lambdatest.proverbial:id/find")));
+            find.click();
+
+            driver.quit();
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (driver != null) {
-                driver.quit();
-            }
         }
     }
 }
