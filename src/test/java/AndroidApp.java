@@ -34,7 +34,7 @@ public class AndroidApp {
             ltOptions.put("deviceName", device);
             ltOptions.put("platformVersion", version);
             ltOptions.put("platformName", platform);
-            ltOptions.put("app", "lt://APP1016054801767535388174642");
+            ltOptions.put("app", "lt://APP1016055391769006462699400");
             ltOptions.put("autoGrantPermissions", true);
             ltOptions.put("isRealMobile", true);
             capabilities.setCapability("lt:options", ltOptions);
