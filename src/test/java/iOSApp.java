@@ -40,7 +40,7 @@ public class iOSApp {
             ltOptions.put("platformName", "ios");
             ltOptions.put("platformVersion", "17");
             ltOptions.put("deviceName", "iPhone.*");
-            ltOptions.put("app", "lt://APP10160171061769556365611264");
+            ltOptions.put("app", "<your_app_id>");
             options.setCapability("lt:options", ltOptions);
 
             String hub = "https://" + userName + ":" + accessKey + "@mobile-hub.lambdatest.com/wd/hub";
