@@ -35,7 +35,7 @@ public class AndroidApp {
             ltOptions.put("platformName", "android");
             ltOptions.put("platformVersion", "15");
             ltOptions.put("deviceName", "Galaxy.*");
-            ltOptions.put("app", "lt://APP  10160502491773060447490389");
+            ltOptions.put("app", ",{app_id}");
             options.setCapability("lt:options", ltOptions);
 
 
